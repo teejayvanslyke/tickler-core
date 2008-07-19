@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+Tickler::Initializer.run do 
+
+  # Fill this in with your task adapter of choice.  Currently avaiable 
+  # task adapters include:
+  #   :trac
+  # 
+  # Be sure to look at your adapter's documentation for required 
+  # parameters.
+  task_adapter(:echo) do
+  end
+
+  # Fill this in with your version control adapter of choice.  Currently
+  # available version control adapters include:
+  #   :None.
+  
+end
