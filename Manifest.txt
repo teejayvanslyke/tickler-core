@@ -6,7 +6,14 @@ README.txt
 Rakefile
 config/hoe.rb
 config/requirements.rb
+bin/tickler
 lib/tickler.rb
+lib/tickler/echo_task_adapter.rb
+lib/tickler/initializer.rb
+lib/tickler/milestone.rb
+lib/tickler/task_adapter.rb
+lib/tickler/ticket.rb
+lib/tickler/util.rb
 lib/tickler/version.rb
 script/console
 script/destroy

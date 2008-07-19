@@ -26,8 +26,12 @@ module Tickler
 
     def self.create(name)
       if !@@registry.has_key?(name)
-        raise "You need to install (or author ;-)) the "+
-              "tickler-#{name}-adapter gem."
+        begin
+          require 'tickler-' + name.to_s
+        rescue LoadError
+          raise "You need to install (or author ;-)) the "+
+                "tickler-#{name} gem."
+        end
       end
 
       @@registry[name].new

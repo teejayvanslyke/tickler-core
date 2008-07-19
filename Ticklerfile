@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'tickler-trac'
+
 Tickler::Initializer.run do 
 
   # Fill this in with your task adapter of choice.  Currently avaiable 
