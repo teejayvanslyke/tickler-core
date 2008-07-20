@@ -106,7 +106,22 @@ describe Tickler::Util do
         end
 
         describe "with no current milestone set" do
-          it "lists all tickets, sorted by milestone (where applicable)"
+          before(:each) do 
+            @tickets = 
+              [
+                mock(Tickler::Ticket, :title => "Ticket1 Title"),
+                mock(Tickler::Ticket, :title => "Ticket2 Title"),
+                mock(Tickler::Ticket, :title => "Ticket3 Title")
+              ]
+            Tickler::Ticket.stub!(:find).and_return(@tickets)
+          end
+                                                             
+          it "lists all open tickets, sorted by milestone (where applicable)" do
+            Tickler::Util.should_receive(:print_row).with(:title => "Ticket1 Title")
+            Tickler::Util.should_receive(:print_row).with(:title => "Ticket2 Title")
+            Tickler::Util.should_receive(:print_row).with(:title => "Ticket3 Title")
+            Tickler::Util.run ['list']
+          end
         end
       end
 

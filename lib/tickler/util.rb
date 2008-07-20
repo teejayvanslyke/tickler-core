@@ -28,6 +28,11 @@ module Tickler
           when 'ticket';    create_ticket(args)
           when 'milestone'; create_milestone(args)
           end
+        when 'list'
+          @tickets = Ticket.find(:all)
+          @tickets.each do |ticket|
+            print_row(:title => ticket.title)
+          end
         end
       end
 
@@ -74,6 +79,11 @@ module Tickler
 
       def Util.print_usage
         puts "usage: TODO"
+      end
+
+      def Util.print_row(columns)
+        columns.each_value {|column| print column}
+        print "\n"
       end
 
   end

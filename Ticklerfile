@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-
-require 'tickler-trac'
+require File.dirname(__FILE__) + '/../tickler-trac/lib/tickler-trac'
 
 Tickler::Initializer.run do 
 
@@ -10,7 +9,10 @@ Tickler::Initializer.run do
   # 
   # Be sure to look at your adapter's documentation for required 
   # parameters.
-  task_adapter(:echo) do
+  task_adapter(:trac) do
+    username  "teejayvanslyke"
+    password  "xerces270"
+    url       "http://trac.assembla.com/tickler"
   end
 
   # Fill this in with your version control adapter of choice.  Currently
