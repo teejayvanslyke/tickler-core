@@ -6,13 +6,13 @@ describe Tickler::Milestone do
 
     before(:each) do
       @adapter = mock('connection adapter')
-      @adapter.stub!(:save_ticket)
+      @adapter.stub!(:save_milestone)
       Tickler::TaskAdapter.stub!(:get).and_return(@adapter)
     end
 
     it "sets attributes" do
-      @ticket = Tickler::Ticket.create(:title => 'some title')
-      @ticket.attributes[:title].should == 'some title'
+      @milestone = Tickler::Milestone.create(:title => 'some title')
+      @milestone.attributes[:title].should == 'some title'
     end
 
     it "saves the milestone to the repository" do
@@ -23,6 +23,14 @@ describe Tickler::Milestone do
         with(@milestone)
       Tickler::Milestone.create(:title => 'some title')
     end
+
+    it "has methods for accessing each attribute" do
+      @milestone = Tickler::Milestone.create(:title => 'some title', 
+                                             :attr => 'high')
+      @milestone.title.should == 'some title'
+      @milestone.attr.should == 'high'
+    end
+
 
   end
 
