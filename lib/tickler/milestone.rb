@@ -17,6 +17,11 @@ module Tickler
       return @milestone
     end
 
+    # Find milestones in the repository
+    def Milestone.find(*args)
+      Tickler::TaskAdapter.get.find_milestones(*args)
+    end
+
   end
 
 end

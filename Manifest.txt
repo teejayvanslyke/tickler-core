@@ -7,6 +7,7 @@ Rakefile
 config/hoe.rb
 config/requirements.rb
 bin/tickler
+lib/string_truncate.rb
 lib/tickler.rb
 lib/tickler/echo_task_adapter.rb
 lib/tickler/initializer.rb

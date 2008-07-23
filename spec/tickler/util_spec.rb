@@ -109,17 +109,17 @@ describe Tickler::Util do
           before(:each) do 
             @tickets = 
               [
-                mock(Tickler::Ticket, :title => "Ticket1 Title"),
-                mock(Tickler::Ticket, :title => "Ticket2 Title"),
-                mock(Tickler::Ticket, :title => "Ticket3 Title")
+                mock(Tickler::Ticket, :id => 1, :title => "Ticket1 Title"),
+                mock(Tickler::Ticket, :id => 2, :title => "Ticket2 Title"),
+                mock(Tickler::Ticket, :id => 3, :title => "Ticket3 Title")
               ]
             Tickler::Ticket.stub!(:find).and_return(@tickets)
           end
                                                              
           it "lists all open tickets, sorted by milestone (where applicable)" do
-            Tickler::Util.should_receive(:print_row).with(:title => "Ticket1 Title")
-            Tickler::Util.should_receive(:print_row).with(:title => "Ticket2 Title")
-            Tickler::Util.should_receive(:print_row).with(:title => "Ticket3 Title")
+            Tickler::Util.should_receive(:print_row).with(:id => 1, :title => "Ticket1 Title")
+            Tickler::Util.should_receive(:print_row).with(:id => 2, :title => "Ticket2 Title")
+            Tickler::Util.should_receive(:print_row).with(:id => 3, :title => "Ticket3 Title")
             Tickler::Util.run ['list']
           end
         end
@@ -133,20 +133,46 @@ describe Tickler::Util do
           end
 
           describe "with no current milestone set" do
-            it "lists all tickets, sorted by milestone (where applicable)"
+            before(:each) do 
+              @tickets = 
+                [
+                  mock(Tickler::Ticket, :id => 1, :title => "Ticket1 Title"),
+                  mock(Tickler::Ticket, :id => 2, :title => "Ticket2 Title"),
+                  mock(Tickler::Ticket, :id => 3, :title => "Ticket3 Title")
+                ]
+              Tickler::Ticket.stub!(:find).and_return(@tickets)
+            end
+                                                               
+            it "lists all open tickets, sorted by milestone (where applicable)" do
+              Tickler::Util.should_receive(:print_row).with(:id => 1, :title => "Ticket1 Title")
+              Tickler::Util.should_receive(:print_row).with(:id => 2, :title => "Ticket2 Title")
+              Tickler::Util.should_receive(:print_row).with(:id => 3, :title => "Ticket3 Title")
+              Tickler::Util.run ['list']
+            end
           end
         end
-
       end
 
       describe "milestones" do
-
         describe "with no arguments" do
-          it "lists all milestones"
+          before(:each) do 
+            @milestones = 
+              [
+                mock(Tickler::Milestone, :id => 1, :title => "Milestone1 Title"),
+                mock(Tickler::Milestone, :id => 2, :title => "Milestone2 Title"),
+                mock(Tickler::Milestone, :id => 3, :title => "Milestone3 Title")
+              ]
+            Tickler::Milestone.stub!(:find).with(:all).and_return(@milestones)
+          end
+                                                             
+          it "lists all milestones" do
+            Tickler::Util.should_receive(:print_row).with(:id => 1, :title => "Milestone1 Title")
+            Tickler::Util.should_receive(:print_row).with(:id => 2, :title => "Milestone2 Title")
+            Tickler::Util.should_receive(:print_row).with(:id => 3, :title => "Milestone3 Title")
+            Tickler::Util.run ['list', 'milestones']
+          end
         end
-
       end
-      
     end
 
     describe "current" do

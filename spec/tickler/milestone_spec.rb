@@ -26,5 +26,29 @@ describe Tickler::Milestone do
 
   end
 
+  describe "Milestone.find" do
+    before(:each) do
+      @adapter = mock('connection adapter')
+      Tickler::TaskAdapter.stub!(:get).and_return(@adapter)
+
+      @milestones = 
+        [
+          mock(Tickler::Milestone, :title => 'foo'),
+          mock(Tickler::Milestone, :title => 'bar')
+        ]
+    end
+
+
+    describe "(:all)" do
+      it "finds all milestones in the repository" do
+        @adapter.should_receive(:find_milestones).
+          with(:all).
+          and_return(@milestones)
+        result = Tickler::Milestone.find(:all)
+        result.should == @milestones
+      end
+    end
+  end
+
 end
 

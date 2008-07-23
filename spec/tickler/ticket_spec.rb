@@ -33,7 +33,19 @@ describe Tickler::Ticket do
 
   end
 
-  describe "Ticket.find_all_open" do
+  describe "id" do
+    
+    before(:each) do
+      @ticket = Tickler::Ticket.new(:id => 234)
+    end
+
+    it "pulls the ID from the attributes hash" do
+      @ticket.id.should == 234
+    end
+  end
+
+
+  describe "Ticket.find" do
 
     before(:each) do
       @adapter = mock('connection adapter')

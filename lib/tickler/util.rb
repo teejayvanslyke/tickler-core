@@ -29,9 +29,20 @@ module Tickler
           when 'milestone'; create_milestone(args)
           end
         when 'list'
-          @tickets = Ticket.find(:all)
-          @tickets.each do |ticket|
-            print_row(:title => ticket.title)
+          what = args[0] || 'tickets'
+          args.shift
+
+          case what
+          when 'tickets'
+            @tickets = Ticket.find(:all)
+            @tickets.each do |ticket|
+              print_row(:id => ticket.id, :title => ticket.title)
+            end
+          when 'milestones'
+            @milestones = Milestone.find(:all)
+            @milestones.each do |milestone|
+              print_row(:id => milestone.id, :title => milestone.title)
+            end
           end
         end
       end
@@ -82,10 +93,12 @@ module Tickler
       end
 
       def Util.print_row(columns)
-        columns.each_value {|column| print column}
+        Initializer.column_order.each do |name|
+          column = columns[name].align_left(Initializer.column_widths[name])
+          print column + ' '
+        end
         print "\n"
       end
-
   end
 end
 
