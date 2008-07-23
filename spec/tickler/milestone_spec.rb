@@ -58,5 +58,16 @@ describe Tickler::Milestone do
     end
   end
 
+  describe "id" do
+    
+    before(:each) do
+      @milestone = Tickler::Milestone.new(:id => 234)
+    end
+
+    it "pulls the ID from the attributes hash" do
+      @milestone.id.should == 234
+    end
+  end
+
 end
 

@@ -22,6 +22,9 @@ module Tickler
       Tickler::TaskAdapter.get.find_milestones(*args)
     end
 
+    # Need this because id is special in Ruby.
+    def id; attributes[:id] || attributes['id']; end
+
     def method_missing(name)
       return @attributes[name] if @attributes.has_key?(name)
       return super
