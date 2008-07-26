@@ -32,6 +32,66 @@ describe Tickler::Util do
 
     end
 
+    describe "command aliases" do
+      it "allows 'ls' in place of 'list'" do
+        Tickler::Util.should_receive(:list)
+        Tickler::Util.run [ 'ls' ]
+      end
+    end
+
+    describe 'info' do
+
+      describe "no arguments" do
+        it "displays help for command" do
+          Tickler::Util.should_receive(:print_usage).
+            with('info')
+          Tickler::Util.run [ 'info' ]
+        end
+      end
+
+      describe 'ticket' do
+
+        describe "with valid ticket ID" do
+          before(:each) do
+            @ticket = mock(Tickler::Ticket, :id => 345,
+                           :title => 'A Sample Ticket',
+                           :attributes => {})
+            Tickler::Ticket.stub!(:find).
+              with('345').
+              and_return(@ticket)
+          end
+
+          it "loads the ticket" do
+            Tickler::Ticket.should_receive(:find).
+              with('345').
+              and_return(@ticket)
+            Tickler::Util.run [ 'info', 'ticket', '345' ]
+          end
+
+          it "displays the data" do
+            Tickler::Util.should_receive(:print_ticket_info).
+              with(@ticket)
+            Tickler::Util.run [ 'info', 'ticket', '345' ]
+          end
+        end
+
+        describe "with no ticket id" do
+          it "displays help for command" do
+            Tickler::Util.should_receive(:print_usage).
+              with('info')
+            Tickler::Util.run [ 'info', 'ticket' ]
+          end
+        end
+
+        describe "with invalid ticket ID" do
+          it "prints an error" 
+        end
+
+      end
+      describe 'milestone'
+      
+    end
+
     describe "create" do
       
       describe "ticket" do
