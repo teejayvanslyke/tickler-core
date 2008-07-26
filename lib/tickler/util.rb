@@ -4,16 +4,16 @@ require 'tickler/version'
 module Tickler
   class Util
 
-    ALIASES =
+    @@aliases =
       {
         'ls'  => 'list',
         'add' => 'create'
       }
 
-    OPTIONS = 
+    @@options = 
       {
       }
-    MANDATORY_OPTIONS = %w(  )
+    @@mandatory_options = %w(  )
 
       def Util.run(args=[])
         begin
@@ -34,8 +34,8 @@ module Tickler
 
         # Look to see whether the user has entered a command alias
         # and translate it.
-        if ALIASES.has_key?(command)
-          command = ALIASES[command]
+        if @@aliases.has_key?(command)
+          command = @@aliases[command]
         end
 
         args.shift
@@ -57,12 +57,12 @@ module Tickler
                   "Print version information.") { puts Tickler::VERSION::MESSAGE; exit }
           opts.parse!(ARGV)
 
-          if MANDATORY_OPTIONS && MANDATORY_OPTIONS.find { |option| OPTIONS[option.to_sym].nil? }
+          if @@mandatory_options && @@mandatory_options.find { |option| @@options[option.to_sym].nil? }
             puts opts; exit
           end
         end
 
-        path = OPTIONS[:path]
+        path = @@options[:path]
       end
 
       private 
@@ -77,6 +77,25 @@ module Tickler
         end
       end
 
+      # Parse attributes from command line arguments formatted
+      # as such:
+      #
+      #   attr:val attr2:"multi-word value" attr3:323
+      #
+      def Util.parse_attributes(arr)
+        attributes = {}
+        arr.each do |attribute_and_value| 
+          pair = attribute_and_value.split(':')
+          key = pair[0].to_sym
+          val = pair[1]
+          if val[0] == 34 && val[val.length-1] == 34
+            val = val[1,val.length-2]
+          end
+          attributes[key] = val 
+        end
+        return attributes
+      end
+
       def Util.create_ticket(args=[])
         if args.length < 1
           error("You need to specify a title for your ticket.\n" + 
@@ -87,11 +106,7 @@ module Tickler
         end
 
         title = args[0]
-        attributes = {}
-        args[1,args.length-1].each do |attribute_and_value| 
-          pair = attribute_and_value.split(':')
-          attributes[pair[0].to_sym] = pair[1]
-        end
+        attributes = parse_attributes(args[1,args.length-1])
 
         Ticket.create(attributes.merge(:title => title))
       end
@@ -135,7 +150,13 @@ module Tickler
 
         case what
         when 'tickets'
-          @tickets = Ticket.find(:all)
+          if args.length > 0
+            attributes = parse_attributes(args)
+          else
+            attributes = {}
+          end
+
+          @tickets = Ticket.find(:all, attributes)
           @tickets.each do |ticket|
             print_row(:id => ticket.id, :title => ticket.title)
           end
@@ -177,7 +198,7 @@ USAGE
 
       def Util.print_row(columns)
         Initializer.column_order.each do |name|
-          column = columns[name].align_left(Initializer.column_widths[name])
+          column = columns[name].to_s.align_left(Initializer.column_widths[name])
           print column + ' '
         end
         print "\n"

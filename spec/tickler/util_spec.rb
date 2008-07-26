@@ -211,6 +211,24 @@ describe Tickler::Util do
             end
           end
         end
+
+        describe "with attribute key-value pairs" do 
+          before(:each) do 
+            @tickets = 
+              [
+                mock(Tickler::Ticket, :id => 1, :title => "Ticket1 Title"),
+                mock(Tickler::Ticket, :id => 2, :title => "Ticket2 Title"),
+                mock(Tickler::Ticket, :id => 3, :title => "Ticket3 Title")
+              ]
+          end
+
+          it "finds tickets which meet the critera" do
+            Tickler::Ticket.should_receive(:find).
+              with(:all, :status => 'open', :milestone => 'some milestone').
+              and_return(@tickets)
+            Tickler::Util.run ['list', 'tickets', 'status:open', 'milestone:"some milestone"']
+          end
+        end
       end
 
       describe "milestones" do
