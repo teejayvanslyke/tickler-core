@@ -1,32 +1,52 @@
 = tickler
 
-* FIX (url)
+* http://github.com/teejayvanslyke/tickler-core/
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Tickler is a project-management-system agnostic interface to your favorite 
+task ticketing tools.  It tries to embody the mantra of convention over  
+configuration by offering developers a bridge to support any task management
+system through the same interface.
+
+tickler-core includes the command line interface for users to create and 
+update tickets and milestones.  However, since Tickler aims to be platform-
+agnostic, this package does not include support for actually interfacing 
+with a ticket tracking tool.  The following interfaces currently exist:
+
+* tickler-trac
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Ability to create new tickets
+* Ability to list tickets according to certain criteria
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+== Listing tickets:
 
-== REQUIREMENTS:
+$ tickler list tickets
+1   As a developer, I want a ticketing system that just works!
+2   As a user, I want software that just works!
+...
 
-* FIX (list of requirements)
+== Creating tickets:
+
+$ tickler create ticket "As a manager, I want developers that just work!" priority:critical
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+Note:  Please upgrade to RubyGems 1.2.0 before proceeding.
+
+$ sudo gem sources -a http://gems.github.com
+$ sudo gem install teejayvanslyke-tickler-core
+$ sudo gem install teejayvanslyke-tickler-trac # it's the only one right now.
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME full name
+Copyright (c) 2008 T.J. VanSlyke
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
